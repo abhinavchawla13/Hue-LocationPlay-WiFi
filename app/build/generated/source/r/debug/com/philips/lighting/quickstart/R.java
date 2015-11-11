@@ -378,15 +378,16 @@ containing a value of this type.
         public static final int classic=0x7f0a0011;
         public static final int countdownPB=0x7f0a0020;
         public static final int descriptionTextview=0x7f0a001e;
+        public static final int distance=0x7f0a0014;
         public static final int empty_list_view=0x7f0a001c;
         public static final int find_new_bridge=0x7f0a0024;
         public static final int grayscale=0x7f0a0012;
         public static final int holo_dark=0x7f0a0005;
         public static final int holo_light=0x7f0a0006;
-        public static final int homeLocation=0x7f0a0019;
+        public static final int homeLocation=0x7f0a0016;
         public static final int hybrid=0x7f0a0000;
         public static final int imageView1=0x7f0a001f;
-        public static final int latitudeText=0x7f0a0016;
+        public static final int latitudeText=0x7f0a0018;
         public static final int linear1=0x7f0a001a;
         public static final int longitudeText=0x7f0a0017;
         public static final int match_parent=0x7f0a000c;
@@ -398,10 +399,9 @@ containing a value of this type.
         public static final int sandbox=0x7f0a0008;
         public static final int satellite=0x7f0a0003;
         public static final int selectionDetails=0x7f0a000b;
-        public static final int setHome=0x7f0a0018;
+        public static final int setHome=0x7f0a0019;
         public static final int strict_sandbox=0x7f0a0009;
         public static final int terrain=0x7f0a0004;
-        public static final int textView1=0x7f0a0014;
         public static final int wrap_content=0x7f0a000d;
     }
     public static final class integer {

@@ -24,7 +24,7 @@
     </ListView>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_vertical"
@@ -39,4 +39,4 @@
 
    
 
-</LinearLayout><!-- From: file:/D:/GitHub/Hue-LocationPlay/app/src/main/res/layout/bridgelistlinear.xml -->
+</LinearLayout><!-- From: file:/D:/GitHub/Hue-LocationPlay-WiFi/app/src/main/res/layout/bridgelistlinear.xml -->

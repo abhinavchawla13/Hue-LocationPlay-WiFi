@@ -9,19 +9,22 @@
     tools:context=".PHMyApplicationActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitude, Longitute" />
+        android:text="distance"
+        android:layout_below="@+id/buttonRand"
+        android:layout_alignRight="@+id/homeLocation"
+        android:layout_alignEnd="@+id/homeLocation" />
     
     <Button
         android:id="@+id/buttonRand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:text="Button" android:paddingLeft="10dp" android:paddingRight="10dp"
+        android:layout_below="@+id/longitudeText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Button" android:paddingLeft="10dp" android:paddingRight="10dp"/>
+        android:layout_marginTop="79dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,8 +51,8 @@
         android:text="Set Home"
         android:id="@+id/setHome"
         android:layout_above="@+id/latitudeText"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_alignEnd="@+id/textView1"
+        android:layout_alignRight="@+id/distance"
+        android:layout_alignEnd="@+id/distance"
         android:layout_marginBottom="27dp" />
 
     <TextView
@@ -57,8 +60,9 @@
         android:layout_height="wrap_content"
         android:text="homeLocation"
         android:id="@+id/homeLocation"
-        android:layout_alignTop="@+id/setHome"
+        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/latitudeText"
-        android:layout_alignStart="@+id/latitudeText" />
+        android:layout_alignStart="@+id/latitudeText"
+        android:layout_marginTop="51dp" />
 
 </RelativeLayout>

@@ -10,7 +10,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +36,8 @@ import com.philips.lighting.model.PHLightState;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.w3c.dom.Text;
+
 /**
  * MyApplicationActivity - The starting point for creating your own Hue App.
  * Currently contains a simple view with a button to change your lights to random colours.  Remove this and add your own app implementation here! Have fun!
@@ -53,6 +57,7 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
     Location mLastLocation;
     String homeLatitude;
     String homeLongitude;
+    SharedPreferences savedHomeLocation;
 
 //    GUI Variables
     TextView latitudeText;
@@ -60,6 +65,7 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
     Button randomButton;
     Button setHomeButton;
     TextView homeLocation;
+    TextView distance;
 
 
 
@@ -76,13 +82,18 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
         randomButton = (Button) findViewById(R.id.buttonRand);
         setHomeButton = (Button) findViewById(R.id.setHome);
         homeLocation = (TextView) findViewById(R.id.homeLocation);
+        distance = (TextView) findViewById(R.id.distance);
+
+        savedHomeLocation = getSharedPreferences("home", Context.MODE_PRIVATE);
+        homeLatitude = savedHomeLocation.getString("homeLatitude", null);
+        homeLongitude = savedHomeLocation.getString("homeLongitude", null);
 
         buildGoogleApiClient();
         mGoogleApiClient.connect();
         createLocationRequest();
 
 
-
+        displayHomeLocation();
         randomButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +108,6 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
             }
         });
 
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -110,14 +120,21 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(3000);
+        mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        mLocationRequest.
+//        mLocationRequest.setPriority(70);
     }
 
     public void setHomeLocation(){
         homeLatitude = String.valueOf(mCurrentLocation.getLatitude());
         homeLongitude = String.valueOf(mCurrentLocation.getLongitude());
+        SharedPreferences.Editor edit = savedHomeLocation.edit();
+        edit.clear();
+        edit.putString("homeLatitude", homeLatitude);
+        edit.putString("homeLongitude", homeLongitude);
+        edit.commit();
     }
 
     public void displayHomeLocation(){
@@ -147,7 +164,7 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to modify your home location?")
+        builder.setMessage("Are you sure you want to set this place as your home location?")
                 .setPositiveButton("Yes", confirmCall)
                 .setNegativeButton("No", null).show();
     }
@@ -242,6 +259,7 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
+        mCurrentLocation.setAccuracy((float)0.0001);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
     }
@@ -249,6 +267,44 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
     private void updateUI() {
         latitudeText.setText("(" + String.valueOf(mCurrentLocation.getLatitude()) + ", " + String.valueOf(mCurrentLocation.getLongitude()) + ")");
         longitudeText.setText(mLastUpdateTime);
+        distance.setText(String.valueOf(calculateDistance(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),
+                Double.parseDouble(homeLatitude), Double.parseDouble(homeLongitude))));
+    }
+
+    public double distanceCalculator(){
+        if (homeLatitude != null && homeLongitude != null) {
+            double dlat = deg2rad((mCurrentLocation.getLatitude() - Double.parseDouble(homeLatitude)));
+            double dlon = deg2rad((mCurrentLocation.getLongitude() - Double.parseDouble(homeLongitude)));
+            double calA = Math.pow((Math.sin(dlat/2)),2) +
+                    Math.cos(deg2rad(mCurrentLocation.getLatitude()))*Math.cos(deg2rad(Double.parseDouble(homeLatitude)))*
+                            Math.pow(Math.sin(dlon/2),2);
+            double calC = 2*Math.atan2(Math.sqrt(calA), Math.sqrt(1-calA));
+            return 6371*calC*(10^20);
+
+//            return Math.sqrt(Math.pow((mCurrentLocation.getLatitude() - Double.parseDouble(homeLatitude)),2) +
+//                    Math.sqrt(Math.pow((mCurrentLocation.getLongitude() - Double.parseDouble(homeLongitude)),2)));
+        }
+        return (double) mCurrentLocation.getAccuracy();
+    }
+
+    public double deg2rad(double deg) {
+        return deg*(Math.PI/180);
+    }
+
+    public final static double AVERAGE_RADIUS_OF_EARTH = 6371;
+    public double calculateDistance(double userLat, double userLng,
+                                 double venueLat, double venueLng) {
+
+        double latDistance = Math.toRadians(userLat - venueLat);
+        double lngDistance = Math.toRadians(userLng - venueLng);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return AVERAGE_RADIUS_OF_EARTH * c * (10^4);
     }
 
 //    I would like if it works in the background as well

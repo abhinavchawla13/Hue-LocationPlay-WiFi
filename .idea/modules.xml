@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Hue-LocationPlay.iml" filepath="$PROJECT_DIR$/Hue-LocationPlay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Hue-LocationPlay-WiFi.iml" filepath="$PROJECT_DIR$/Hue-LocationPlay-WiFi.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
