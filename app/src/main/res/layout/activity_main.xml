@@ -48,10 +48,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Home"
-        android:id="@+id/setHome"
-        android:layout_alignBaseline="@+id/homeLocation"
-        android:layout_alignBottom="@+id/homeLocation"
+        android:text="Refresh"
+        android:id="@+id/refresh"
+        android:layout_above="@+id/latitudeText"
         android:layout_alignRight="@+id/latitudeText"
         android:layout_alignEnd="@+id/latitudeText" />
 
@@ -60,10 +59,10 @@
         android:layout_height="wrap_content"
         android:text="homeLocation"
         android:id="@+id/homeLocation"
-        android:layout_above="@+id/latitudeText"
-        android:layout_alignRight="@+id/hueWiFi"
-        android:layout_alignEnd="@+id/hueWiFi"
-        android:layout_marginBottom="42dp" />
+        android:layout_below="@+id/presentWiFi"
+        android:layout_alignLeft="@+id/refresh"
+        android:layout_alignStart="@+id/refresh"
+        android:layout_marginTop="40dp" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -74,7 +73,6 @@
         android:layout_toLeftOf="@+id/hueButton"
         android:layout_toRightOf="@+id/buttonRand"
         android:layout_toEndOf="@+id/buttonRand"
-        android:text="gfkgj"
         android:textSize="16sp" />
 
     <TextView

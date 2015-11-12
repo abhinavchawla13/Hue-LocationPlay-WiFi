@@ -1,24 +1,12 @@
 package com.philips.lighting.quickstart;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -32,10 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.philips.lighting.hue.listener.PHLightListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHBridge;
@@ -43,10 +27,6 @@ import com.philips.lighting.model.PHBridgeResource;
 import com.philips.lighting.model.PHHueError;
 import com.philips.lighting.model.PHLight;
 import com.philips.lighting.model.PHLightState;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.w3c.dom.Text;
 
 /**
  * MyApplicationActivity - The starting point for creating your own Hue App.
@@ -95,7 +75,7 @@ public class MyApplicationActivity extends Activity {
         latitudeText = (TextView) findViewById(R.id.latitudeText);
         longitudeText = (TextView) findViewById(R.id.longitudeText);
         randomButton = (Button) findViewById(R.id.buttonRand);
-        setHomeButton = (Button) findViewById(R.id.setHome);
+        setHomeButton = (Button) findViewById(R.id.refresh);
         homeLocation = (TextView) findViewById(R.id.homeLocation);
         distance = (TextView) findViewById(R.id.distance);
 
@@ -114,23 +94,12 @@ public class MyApplicationActivity extends Activity {
         hueBottonPresent = "edit";
         hueWiFi.setText(savedHue.getString("homeHue", null));
 
-        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        int state = wifi.getWifiState();
-        if (state == WifiManager.WIFI_STATE_ENABLED) {
-            WifiInfo currentWifi = wifi.getConnectionInfo();
-            presentWiFiText.setText(currentWifi.getSSID().substring(1, currentWifi.getSSID().length() - 1));
-            String a = "\"CadHxYUYTx_c\"";
-           if (currentWifi.getSSID().equals(a)) {
-               latitudeText.setText(a);
-               randomLights();
-            }
-        }
-
+        mainWiFi();
 
         setHomeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkWifi();
+                mainWiFi();
             }
         });
 
@@ -166,6 +135,23 @@ public class MyApplicationActivity extends Activity {
         edit.clear();
         edit.putString("homeHue", hueWiFi.getText().toString());
         edit.commit();
+        Toast.makeText(MyApplicationActivity.this, "Hue's WiFi SSID saved." ,Toast.LENGTH_LONG).show();
+        mainWiFi();
+    }
+
+    private void mainWiFi(){
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        int state = wifi.getWifiState();
+        if (state == WifiManager.WIFI_STATE_ENABLED) {
+            WifiInfo currentWifi = wifi.getConnectionInfo();
+            String presentWifiName = currentWifi.getSSID().substring(1, currentWifi.getSSID().length() - 1);
+            presentWiFiText.setText(presentWifiName);
+            if (presentWifiName.equals(hueWiFi.getText().toString())) {
+                int level = wifi.calculateSignalLevel(currentWifi.getRssi(), 10000);
+                randomLights(level);
+                longitudeText.setText("Level is " + level + " out of 10000");
+            }
+        }
     }
 
     private void checkWifi() {
@@ -204,7 +190,7 @@ public class MyApplicationActivity extends Activity {
     }
 
 
-    public void randomLights() {
+    public void randomLights(int level) {
         PHBridge bridge = phHueSDK.getSelectedBridge();
 
         List<PHLight> allLights = bridge.getResourceCache().getAllLights();
@@ -212,8 +198,26 @@ public class MyApplicationActivity extends Activity {
 
         for (PHLight light : allLights) {
             PHLightState lightState = new PHLightState();
-            lightState.setHue(rand.nextInt(MAX_HUE));
-            // To validate your lightstate is valid (before sending to the bridge) you can use:  
+            distance.setText(light.getLastKnownLightState().getBrightness().toString());
+//            lightState.setBrightness(3);
+//            lightState.setHue(rand.nextInt(MAX_HUE));
+            lightState.setTransitionTime(15);
+            if (level < 6000) {
+                lightState.setBrightness(3);
+            }
+//            else if (level < 7000){
+//                lightState.setBrightness(60);
+//            }
+            else if (level < 7500){
+                lightState.setBrightness(80);
+            }
+            else if (level < 9000) {
+                lightState.setBrightness(170);
+            }
+            else {
+                lightState.setBrightness(250);
+            }
+            // To validate your lightstate is valid (before sending to the bridge) you can use:
             // String validState = lightState.validateState();
             bridge.updateLightState(light, lightState, listener);
             //  bridge.updateLightState(light, lightState);   // If no bridge response is required then use this simpler form.

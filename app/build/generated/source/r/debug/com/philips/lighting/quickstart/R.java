@@ -406,7 +406,7 @@ containing a value of this type.
         public static final int sandbox=0x7f0a0008;
         public static final int satellite=0x7f0a0003;
         public static final int selectionDetails=0x7f0a000b;
-        public static final int setHome=0x7f0a0019;
+        public static final int refresh =0x7f0a0019;
         public static final int strict_sandbox=0x7f0a0009;
         public static final int terrain=0x7f0a0004;
         public static final int wrap_content=0x7f0a000d;
