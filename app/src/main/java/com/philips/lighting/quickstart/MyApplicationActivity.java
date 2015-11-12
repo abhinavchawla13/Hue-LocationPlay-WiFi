@@ -10,15 +10,25 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,22 +54,21 @@ import org.w3c.dom.Text;
  *
  * @author SteveyO
  */
-public class MyApplicationActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
-
-//    In activity variables
+public class MyApplicationActivity extends Activity {
+    //    In activity variables
     private PHHueSDK phHueSDK;
     private static final int MAX_HUE = 65535;
     public static final String TAG = "QuickStart";
-    String mLastUpdateTime;
-    GoogleApiClient mGoogleApiClient;
-    LocationRequest mLocationRequest;
-    Location mCurrentLocation;
-    Location mLastLocation;
-    String homeLatitude;
-    String homeLongitude;
-    SharedPreferences savedHomeLocation;
+//    String mLastUpdateTime;
+//    GoogleApiClient mGoogleApiClient;
+//    LocationRequest mLocationRequest;
+//    Location mCurrentLocation;
+//    Location mLastLocation;
+//    String homeLatitude;
+//    String homeLongitude;
+//    SharedPreferences savedHomeLocation;
 
-//    GUI Variables
+    //    GUI Variables
     TextView latitudeText;
     TextView longitudeText;
     Button randomButton;
@@ -67,7 +76,13 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
     TextView homeLocation;
     TextView distance;
 
-
+//    New GUI
+    EditText hueWiFi;
+    EditText presentWiFiText;
+    ImageButton hueButton;
+    SharedPreferences savedHue;
+    String homeHue;
+    String hueBottonPresent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,89 +99,108 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
         homeLocation = (TextView) findViewById(R.id.homeLocation);
         distance = (TextView) findViewById(R.id.distance);
 
-        savedHomeLocation = getSharedPreferences("home", Context.MODE_PRIVATE);
-        homeLatitude = savedHomeLocation.getString("homeLatitude", null);
-        homeLongitude = savedHomeLocation.getString("homeLongitude", null);
+//        New GUI
+        hueWiFi = (EditText) findViewById(R.id.hueWiFiText);
+        presentWiFiText = (EditText) findViewById(R.id.presentWiFiText);
+        hueButton = (ImageButton) findViewById(R.id.hueButton);
+        savedHue = getSharedPreferences("home", Context.MODE_PRIVATE);
+        homeHue = savedHue.getString("homeHue", null);
 
-        buildGoogleApiClient();
-        mGoogleApiClient.connect();
-        createLocationRequest();
+        presentWiFiText.setEnabled(false);
+        presentWiFiText.setFocusable(false);
+        hueWiFi.setEnabled(false);
+        hueWiFi.setFocusable(false);
 
+        hueBottonPresent = "edit";
+        hueWiFi.setText(savedHue.getString("homeHue", null));
 
-        displayHomeLocation();
-        randomButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                randomLights();
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        int state = wifi.getWifiState();
+        if (state == WifiManager.WIFI_STATE_ENABLED) {
+            WifiInfo currentWifi = wifi.getConnectionInfo();
+            presentWiFiText.setText(currentWifi.getSSID().substring(1, currentWifi.getSSID().length() - 1));
+            String a = "\"CadHxYUYTx_c\"";
+           if (currentWifi.getSSID().equals(a)) {
+               latitudeText.setText(a);
+               randomLights();
             }
-        });
+        }
+
 
         setHomeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeLocationChangeAlert();
+                checkWifi();
             }
         });
 
+        hueButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hueBottonPresent.equals("edit")) {
+                    hueWorkEdit();
+                    hueBottonPresent = "save";
+                }
+                else {
+                    hueWorkSave();
+                    hueBottonPresent = "edit";
+                }
+            }
+
+        });
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+    private void hueWorkEdit(){
+        hueWiFi.setEnabled(true);
+        hueWiFi.setFocusableInTouchMode(true);
+        hueWiFi.setFocusable(true);
+        hueButton.setBackgroundResource(R.drawable.done);
+
     }
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        mLocationRequest.
-//        mLocationRequest.setPriority(70);
-    }
-
-    public void setHomeLocation(){
-        homeLatitude = String.valueOf(mCurrentLocation.getLatitude());
-        homeLongitude = String.valueOf(mCurrentLocation.getLongitude());
-        SharedPreferences.Editor edit = savedHomeLocation.edit();
+    private void hueWorkSave(){
+        hueButton.setBackgroundResource(R.drawable.edit);
+        hueWiFi.setEnabled(false);
+        hueWiFi.setFocusable(false);
+        SharedPreferences.Editor edit = savedHue.edit();
         edit.clear();
-        edit.putString("homeLatitude", homeLatitude);
-        edit.putString("homeLongitude", homeLongitude);
+        edit.putString("homeHue", hueWiFi.getText().toString());
         edit.commit();
     }
 
-    public void displayHomeLocation(){
-        if (homeLatitude != null && homeLongitude != null){
-            homeLocation.setText("(" + homeLatitude + ", " + homeLongitude + ")");
-        }
-        else{
-            homeLocation.setText("");
-        }
-    }
+    private void checkWifi() {
+        final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        int state = wifi.getWifiState();
+        if (state == WifiManager.WIFI_STATE_ENABLED) {
+            List<ScanResult> results = wifi.getScanResults();
+            int level = 150;
+            for (ScanResult result : results) {
+                {
+                    if (result.BSSID.equals(wifi.getConnectionInfo().getBSSID())) {
 
-    public void homeLocationChangeAlert(){
-        DialogInterface.OnClickListener confirmCall = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i){
-                    case  DialogInterface.BUTTON_POSITIVE:
-                        setHomeLocation();
-                        displayHomeLocation();
-                        Toast.makeText(MyApplicationActivity.this, "Home location saved!", Toast.LENGTH_SHORT).show();
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        displayHomeLocation();
-                        break;
+                        level = WifiManager.calculateSignalLevel(wifi.getConnectionInfo().getRssi(),
+                                result.level);
+                        int level2 = WifiManager.calculateSignalLevel(wifi.getConnectionInfo().getRssi(),
+                                500);
+                        int difference = level * 100 / result.level;
+                        int difference2 = level2 * 100 / 500;
+//                    int signalStrangth= 0;
+//                    if(difference >= 100)
+//                        signalStrangth = 4;
+//                    else if(difference >= 75)
+//                        signalStrangth = 3;
+//                    else if(difference >= 50)
+//                        signalStrangth = 2;
+//                    else if(difference >= 25)
+//                        signalStrangth = 1;
+//                    homeLocation.setText(homeLocation.getText() + "\n" + result.SSID + ": Difference :" + difference + " signal state:" + signalStrangth);
+//                        int level = WifiManager.calculateSignalLevel(wifi.getConnectionInfo().getRssi(),result.level);
+                        homeLocation.setText("Level: " + level + " || Result.level: " + result.level + " || Difference: " + difference);
+                        latitudeText.setText("Leve2: " + level2 + " || Result.level: " + 500 + " || Difference: " + difference2);
+                    }
                 }
             }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to set this place as your home location?")
-                .setPositiveButton("Yes", confirmCall)
-                .setNegativeButton("No", null).show();
+        }
     }
 
 
@@ -229,92 +263,14 @@ public class MyApplicationActivity extends Activity implements GoogleApiClient.C
         }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            latitudeText.setText("(" + String.valueOf(mLastLocation.getLatitude()) + ", "
-                    + String.valueOf(mLastLocation.getLongitude()) + ")");
-            longitudeText.setText(" ");
-        }
-        startLocationUpdates();
-
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    public void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        mCurrentLocation.setAccuracy((float)0.0001);
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
-    }
-
-    private void updateUI() {
-        latitudeText.setText("(" + String.valueOf(mCurrentLocation.getLatitude()) + ", " + String.valueOf(mCurrentLocation.getLongitude()) + ")");
-        longitudeText.setText(mLastUpdateTime);
-        distance.setText(String.valueOf(calculateDistance(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),
-                Double.parseDouble(homeLatitude), Double.parseDouble(homeLongitude))));
-    }
-
-    public double distanceCalculator(){
-        if (homeLatitude != null && homeLongitude != null) {
-            double dlat = deg2rad((mCurrentLocation.getLatitude() - Double.parseDouble(homeLatitude)));
-            double dlon = deg2rad((mCurrentLocation.getLongitude() - Double.parseDouble(homeLongitude)));
-            double calA = Math.pow((Math.sin(dlat/2)),2) +
-                    Math.cos(deg2rad(mCurrentLocation.getLatitude()))*Math.cos(deg2rad(Double.parseDouble(homeLatitude)))*
-                            Math.pow(Math.sin(dlon/2),2);
-            double calC = 2*Math.atan2(Math.sqrt(calA), Math.sqrt(1-calA));
-            return 6371*calC*(10^20);
-
-//            return Math.sqrt(Math.pow((mCurrentLocation.getLatitude() - Double.parseDouble(homeLatitude)),2) +
-//                    Math.sqrt(Math.pow((mCurrentLocation.getLongitude() - Double.parseDouble(homeLongitude)),2)));
-        }
-        return (double) mCurrentLocation.getAccuracy();
-    }
-
-    public double deg2rad(double deg) {
-        return deg*(Math.PI/180);
-    }
-
-    public final static double AVERAGE_RADIUS_OF_EARTH = 6371;
-    public double calculateDistance(double userLat, double userLng,
-                                 double venueLat, double venueLng) {
-
-        double latDistance = Math.toRadians(userLat - venueLat);
-        double lngDistance = Math.toRadians(userLng - venueLng);
-
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
-                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return AVERAGE_RADIUS_OF_EARTH * c * (10^4);
-    }
-
-//    I would like if it works in the background as well
-//    @Override
-//    public void onPause(){
-//        super.onPause();
-//        stopLocationUpdates();
-//    }
+    //
 //
-//    private void stopLocationUpdates() {
-//        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-//    }
+    private void updateUI() {
+//        latitudeText.setText("(" + String.valueOf(mCurrentLocation.getLatitude()) + ", " + String.valueOf(mCurrentLocation.getLongitude()) + ")");
+//        longitudeText.setText(mLastUpdateTime);
+//        distance.setText(String.valueOf(calculateDistance(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude(),
+//                Double.parseDouble(homeLatitude), Double.parseDouble(homeLongitude))));
+    }
+
+//
 }

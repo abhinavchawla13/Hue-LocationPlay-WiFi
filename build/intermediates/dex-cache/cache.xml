@@ -9,11 +9,46 @@
         <dex dex="D:\GitHub\Hue-LocationPlay\app\build\intermediates\pre-dexed\debug\huelocalsdk-291b9b16754f65a1b17d180290e209598a155e95.jar" />
     </item>
     <item
+        jar="C:\Users\abhin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="D:\Files\AndroidDev\QuickStartApp1\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-fe9cc60cc80c3b022266fb3ecc214878120c0a01.jar" />
+    </item>
+    <item
+        jar="D:\GitHub\Hue-LocationPlay-WiFi\app\libs\huelocalsdk.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="4b1a614771148bb6e955f44722dfdaeb0da11925">
+        <dex dex="D:\GitHub\Hue-LocationPlay-WiFi\app\build\intermediates\pre-dexed\debug\huelocalsdk-f85b55fcc3d1fbe1a9b7bc27b42ca7da62a1e960.jar" />
+    </item>
+    <item
         jar="D:\Files\AndroidDev\QuickStartApp1\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.0.89\jars\classes.jar"
         jumboMode="false"
         revision="23.0.0"
         sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa">
         <dex dex="D:\Files\AndroidDev\QuickStartApp1\app\build\intermediates\pre-dexed\debug\classes-93707a39a5cf495e3df3e0b182ed79d757c85763.jar" />
+    </item>
+    <item
+        jar="D:\GitHub\Hue-LocationPlay-WiFi\app\libs\huesdkresources.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="4ab4750a4b01156a5aa3ca6c591d9650424ce70d">
+        <dex dex="D:\GitHub\Hue-LocationPlay-WiFi\app\build\intermediates\pre-dexed\debug\huesdkresources-c7082be1499da5a232d71535e813bf86e135d15a.jar" />
+    </item>
+    <item
+        jar="D:\GitHub\Hue-LocationPlay\app\libs\huesdkresources.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="4ab4750a4b01156a5aa3ca6c591d9650424ce70d">
+        <dex dex="D:\GitHub\Hue-LocationPlay\app\build\intermediates\pre-dexed\debug\huesdkresources-39e2acf078f4f14adcf2365b74a6a1fac086000f.jar" />
+    </item>
+    <item
+        jar="D:\GitHub\Hue-LocationPlay-WiFi\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.0.89\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa">
+        <dex dex="D:\GitHub\Hue-LocationPlay-WiFi\app\build\intermediates\pre-dexed\debug\classes-d07bf2c20acb2ae46db3ee0faa0b0994471232b2.jar" />
     </item>
     <item
         jar="D:\Files\AndroidDev\QuickStartApp1\app\libs\huesdkresources.jar"
@@ -28,20 +63,6 @@
         revision="23.0.0"
         sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa">
         <dex dex="D:\GitHub\Hue-LocationPlay\app\build\intermediates\pre-dexed\debug\classes-70125b1fde7c7eb87245f87984d2c2bb93d1eb42.jar" />
-    </item>
-    <item
-        jar="D:\GitHub\Hue-LocationPlay\app\libs\huesdkresources.jar"
-        jumboMode="false"
-        revision="23.0.0"
-        sha1="4ab4750a4b01156a5aa3ca6c591d9650424ce70d">
-        <dex dex="D:\GitHub\Hue-LocationPlay\app\build\intermediates\pre-dexed\debug\huesdkresources-39e2acf078f4f14adcf2365b74a6a1fac086000f.jar" />
-    </item>
-    <item
-        jar="C:\Users\abhin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
-        jumboMode="false"
-        revision="23.0.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
-        <dex dex="D:\Files\AndroidDev\QuickStartApp1\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-fe9cc60cc80c3b022266fb3ecc214878120c0a01.jar" />
     </item>
     <item
         jar="D:\Files\AndroidDev\QuickStartApp1\app\libs\huelocalsdk.jar"

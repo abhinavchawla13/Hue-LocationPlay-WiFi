@@ -50,19 +50,70 @@
         android:layout_height="wrap_content"
         android:text="Set Home"
         android:id="@+id/setHome"
-        android:layout_above="@+id/latitudeText"
-        android:layout_alignRight="@+id/distance"
-        android:layout_alignEnd="@+id/distance"
-        android:layout_marginBottom="27dp" />
+        android:layout_alignBaseline="@+id/homeLocation"
+        android:layout_alignBottom="@+id/homeLocation"
+        android:layout_alignRight="@+id/latitudeText"
+        android:layout_alignEnd="@+id/latitudeText" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="homeLocation"
         android:id="@+id/homeLocation"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/latitudeText"
-        android:layout_alignStart="@+id/latitudeText"
-        android:layout_marginTop="51dp" />
+        android:layout_above="@+id/latitudeText"
+        android:layout_alignRight="@+id/hueWiFi"
+        android:layout_alignEnd="@+id/hueWiFi"
+        android:layout_marginBottom="42dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:id="@+id/presentWiFiText"
+        android:layout_marginTop="10dp"
+        android:editable="true"
+        android:layout_toLeftOf="@+id/hueButton"
+        android:layout_toRightOf="@+id/buttonRand"
+        android:layout_toEndOf="@+id/buttonRand"
+        android:text="gfkgj"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Present WiFi Connection SSID:"
+        android:id="@+id/hueWiFi"
+        android:layout_alignBottom="@+id/presentWiFiText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Hue&apos;s WiFi SSID:"
+        android:id="@+id/presentWiFi"
+        android:layout_alignBottom="@+id/hueWiFiText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="32dp"
+        android:id="@+id/hueWiFiText"
+        android:editable="true"
+        android:textSize="16sp"
+        android:layout_below="@+id/presentWiFiText"
+        android:layout_toRightOf="@+id/buttonRand"
+        android:layout_toLeftOf="@+id/hueButton"
+        android:layout_toStartOf="@+id/hueButton" />
+
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/hueButton"
+        android:background="@drawable/edit"
+        android:layout_alignBottom="@+id/hueWiFiText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="6dp" />
 
 </RelativeLayout><!-- From: file:/D:/GitHub/Hue-LocationPlay-WiFi/app/src/main/res/layout/activity_main.xml -->
