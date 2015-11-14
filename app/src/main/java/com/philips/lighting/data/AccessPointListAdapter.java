@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.philips.lighting.hue.sdk.PHAccessPoint;
-import com.philips.lighting.quickstart.R;
+import com.philips.lighting.LocationPlayWiFi.R;
 
 /**
  * This class provides adapter view for a list of Found Bridges.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.philips.lighting.quickstart"
+    package="com.philips.lighting.LocationPlayWiFi"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -9,19 +9,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-sdk tools:overrideLibrary="com.google.android.gms"/>
+    <uses-sdk android:minSdkVersion = "21"
+        android:targetSdkVersion="21"
+        tools:overrideLibrary="com.google.android.gms"/>
     
     
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/abc"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.philips.lighting.quickstart.PHHomeActivity"
+            android:name="com.philips.lighting.LocationPlayWiFi.PHHomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,12 +33,12 @@
 
         
 	    <activity
-	         android:name="com.philips.lighting.quickstart.MyApplicationActivity"
+	         android:name="com.philips.lighting.LocationPlayWiFi.MyApplicationActivity"
              android:windowSoftInputMode="stateAlwaysHidden"
 	         android:label="@string/txt_selectbridges" >
 	    </activity>        
 	    <activity
-	         android:name="com.philips.lighting.quickstart.PHPushlinkActivity"
+	         android:name="com.philips.lighting.LocationPlayWiFi.PHPushlinkActivity"
 	         android:label="@string/app_name" >
 	     </activity>
 

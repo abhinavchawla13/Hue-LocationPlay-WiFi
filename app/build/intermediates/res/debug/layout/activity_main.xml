@@ -6,64 +6,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".PHMyApplicationActivity" >
+    tools:context=".PHMyApplicationActivity"
+    android:background="@drawable/bg"
+    android:clickable="false"
+    android:screenOrientation="portrait">
 
     <TextView
-        android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="distance"
-        android:layout_below="@+id/buttonRand"
-        android:layout_alignRight="@+id/homeLocation"
-        android:layout_alignEnd="@+id/homeLocation" />
-    
-    <Button
-        android:id="@+id/buttonRand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" android:paddingLeft="10dp" android:paddingRight="10dp"
-        android:layout_below="@+id/longitudeText"
+        android:text="Connection Strength"
+        android:id="@+id/connectionStrength"
+        android:layout_marginBottom="180dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Latitude"
-        android:id="@+id/latitudeText"
-        android:layout_above="@+id/longitudeText"
-        android:layout_alignLeft="@+id/longitudeText"
-        android:layout_alignStart="@+id/longitudeText" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Longitude"
-        android:id="@+id/longitudeText"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/buttonRand"
-        android:layout_alignStart="@+id/buttonRand" />
+        android:layout_marginTop="20dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Home"
-        android:id="@+id/setHome"
-        android:layout_alignBaseline="@+id/homeLocation"
-        android:layout_alignBottom="@+id/homeLocation"
-        android:layout_alignRight="@+id/latitudeText"
-        android:layout_alignEnd="@+id/latitudeText" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="homeLocation"
-        android:id="@+id/homeLocation"
-        android:layout_above="@+id/latitudeText"
-        android:layout_alignRight="@+id/hueWiFi"
-        android:layout_alignEnd="@+id/hueWiFi"
-        android:layout_marginBottom="42dp" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/refresh"
+        android:background="@drawable/refresh"
+        android:clickable="true"
+        android:layout_above="@+id/connectionStrength"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -72,10 +38,8 @@
         android:layout_marginTop="10dp"
         android:editable="true"
         android:layout_toLeftOf="@+id/hueButton"
-        android:layout_toRightOf="@+id/buttonRand"
-        android:layout_toEndOf="@+id/buttonRand"
-        android:text="gfkgj"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_toEndOf="@+id/hueWiFi" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,7 +48,8 @@
         android:id="@+id/hueWiFi"
         android:layout_alignBottom="@+id/presentWiFiText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -102,9 +67,8 @@
         android:editable="true"
         android:textSize="16sp"
         android:layout_below="@+id/presentWiFiText"
-        android:layout_toRightOf="@+id/buttonRand"
         android:layout_toLeftOf="@+id/hueButton"
-        android:layout_toStartOf="@+id/hueButton" />
+        android:layout_alignStart="@+id/presentWiFiText" />
 
     <ImageButton
         android:layout_width="20dp"
@@ -114,6 +78,24 @@
         android:layout_alignBottom="@+id/hueWiFiText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="6dp" />
+        android:layout_marginBottom="6dp"
+        android:clickable="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Connection Status:"
+        android:id="@+id/textView"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/presentWiFi"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/status"
+        android:background="@drawable/no"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignStart="@+id/hueWiFiText" />
 
 </RelativeLayout><!-- From: file:/D:/GitHub/Hue-LocationPlay-WiFi/app/src/main/res/layout/activity_main.xml -->
